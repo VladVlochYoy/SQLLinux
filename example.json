@@ -1,11 +1,87 @@
-{ "userId": 10245, 
-"username": "ivan_petrov", 
-"isActive": true, 
-"roles": [ "editor", "moderator" ], 
-"profile": { "firstName": "Иван", "lastName": "Петров", 
-"email": "ivan.petrov@example.com", 
-"age": 34, 
-"languages": [ "ru", "en" ] }, 
-"lastLogin": "2025-10-23T14:30:15Z",
- "preferences": null 
+{
+  "generatedAt": "2026-11-27T03:04:15Z",
+  "stats": {
+    "totalLines": 10,
+    "validLines": 7,
+    "invalidLines": 3,
+    "matchedEvents": 3
+  },
+  "byLevel": {
+    "ERROR": 3,
+    "INFO": 1,
+    "WARN": 1,
+    "DEBUG": 1,
+    "TRACE": 1
+  },
+  "bySource": {
+    "api": 3,
+    "web": 1,
+    "worker": 2,
+    "auth": 1
+  },
+  "topErrors": [
+    {
+      "code": "DB_TIMEOUT",
+      "count": 2,
+      "sources": ["api"],
+      "lastSeen": "2025-01-15T10:20:32Z"
+    },
+    {
+      "code": "AUTH_DENIED",
+      "count": 1,
+      "sources": ["auth"],
+      "lastSeen": "2025-01-15T10:20:36Z"
+    }
+  ],
+  "events": [
+    {
+      "timestamp": "2025-01-15T10:20:30Z",
+      "level": "ERROR",
+      "service": "api",
+      "event": "DB_TIMEOUT",
+      "message": "Database request timed out"
+    },
+    {
+      "timestamp": "2025-01-15T10:20:31Z",
+      "level": "INFO",
+      "service": "web",
+      "event": "PAGE_LOADED",
+      "message": "Dashboard opened"
+    },
+    {
+      "timestamp": "2025-01-15T10:20:32Z",
+      "level": "ERROR",
+      "service": "api",
+      "event": "DB_TIMEOUT",
+      "message": "Retry failed"
+    },
+    {
+      "timestamp": "2025-01-15T10:20:33Z",
+      "level": "WARN",
+      "service": "worker",
+      "event": "QUEUE_DELAY",
+      "message": "Queue processing delayed"
+    },
+    {
+      "timestamp": "2025-01-15T10:20:34Z",
+      "level": "DEBUG",
+      "service": "api",
+      "event": "CACHE_MISS",
+      "message": "Cache key not found"
+    },
+    {
+      "timestamp": "2025-01-15T10:20:36Z",
+      "level": "ERROR",
+      "service": "auth",
+      "event": "AUTH_DENIED",
+      "message": "Token rejected"
+    },
+    {
+      "timestamp": "2025-01-15T10:20:38Z",
+      "level": "TRACE",
+      "service": "worker",
+      "event": "TASK_START",
+      "message": "Task started"
+    }
+  ]
 }
