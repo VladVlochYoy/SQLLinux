@@ -12,7 +12,9 @@ export function createAggregator(topN = 10, sampleLimit = 100) {
   let matchedEvents = 0;
 
   return {
+    // Учитывает любую прочитанную строку.
     addLine() { totalLines += 1; },
+    // Учитывает повреждённую строку: номер, причина и начало текста (до 500 символов).
     addInvalid(lineNumber, reason, raw) {
       invalidLines += 1;
       if (sampleErrors.length < sampleLimit) {
