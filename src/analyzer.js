@@ -1,17 +1,17 @@
-import { createReadStream } from "node:fs";
-import { access } from "node:fs/promises";
-import { createInterface } from "node:readline";
-import { parseLine } from "/parser.js";
-import { buildFilters, matchesFilters } from "/filter.js";
-import { createAggregator } from "/aggregator.js";
+// Анализатор: читает журнал построчно (потоком) и передаёт строки
+// в парсер, фильтры и агрегатор. Весь файл в памяти не хранится.
 
+import { createReadStream } from "node:fs";
+import { createInterface } from "node:readline";
+import { parseLine } from "./parser.js";
+import { buildFilters, matchesFilters } from "./filter.js";
+import { createAggregator } from "./aggregator.js";
+import { resolveInputPath } from "./paths.js";
+
+// Анализирует файл и возвращает готовый отчёт (см. aggregator.result()).
+// filePath — путь к журналу; options — from, to, level, source, top.
 export async function analyzeFile(filePath, options = {}) {
-  if (!filePath) throw new Error("Не указан путь к файлу (--input)");
-  try {
-    await access(filePath);
-  } catch {
-    throw new Error(`Файл не найден или недоступен: ${filePath}`);
-  }
+  const resolvedPath = await resolveInputPath(filePath, options.pathOptions);
 
   const filters = buildFilters(options);
   const topN = options.top === undefined ? 10 : Number(options.top);
@@ -19,8 +19,9 @@ export async function analyzeFile(filePath, options = {}) {
 
   const aggregator = createAggregator(topN, 100);
   let lineNumber = 0;
+
   const input = createInterface({
-    input: createReadStream(filePath, { encoding: "utf8" }),
+    input: createReadStream(resolvedPath, { encoding: "utf8" }),
     crlfDelay: Infinity
   });
 
@@ -28,6 +29,7 @@ export async function analyzeFile(filePath, options = {}) {
     for await (const line of input) {
       lineNumber += 1;
       aggregator.addLine();
+
       const parsed = parseLine(line);
       if (!parsed.ok) {
         aggregator.addInvalid(lineNumber, parsed.error, line);
